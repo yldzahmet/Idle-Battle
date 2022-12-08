@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - AIPlayer
+  - Enemy Flag
+  - ranger 1 dest
+  - ranger 2 dest
+  - Our Flag
+  - HPlayer
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -12,13 +18,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - enemy
+  - player
+  - enemy weapon
+  - player weapon
+  - equipment
+  - player search
+  - enemy search
   - 
   - 
   - 

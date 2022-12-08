@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cc0136200c9ba4d928242396f23707, type: 3}
   m_Name: Level 2 Warrior
   m_EditorClassIdentifier: 
-  range: 5
-  health: 22
+  soldierType: 3
+  isRunning: 0
+  isAttacking: 0
+  range: 2
+  health: 10
   attackSpeed: 2
-  attackPower: 0
-  walkSpeed: 0
+  attackPower: 2
+  walkSpeed: 5

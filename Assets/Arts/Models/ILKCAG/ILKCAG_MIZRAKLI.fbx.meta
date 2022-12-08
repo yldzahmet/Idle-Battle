@@ -15,7 +15,27 @@ ModelImporter:
   - first:
       74: 596386014256690076
     second: MIZRAKLI_KOSU
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ILK_CAG_ETEK
+    second: {fileID: 2100000, guid: 72fd08eb48ec33e4fb06fc7c63f475ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ILK_CAG_ETEK_KOYU
+    second: {fileID: 2100000, guid: ab3bd92699032cf45bdb153925456d3b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MAVI_KARAKTER
+    second: {fileID: 2100000, guid: c1c4c0c22b76f364ca8d310f65aa12bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MIZRAK_SOPA_SAPAN_YAY
+    second: {fileID: 2100000, guid: 2ef9d5806826faf40b30c7b8f67facc9, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -109,7 +129,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0

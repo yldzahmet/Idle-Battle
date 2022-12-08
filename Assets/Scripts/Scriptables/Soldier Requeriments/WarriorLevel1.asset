@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 592e11a948b70254b9dcf74e1895a18f, type: 3}
+  m_Name: WarriorLevel1
+  m_EditorClassIdentifier: 
+  name: Warrior Level 1
+  age: 1
+  weapCost: 2
+  armorCost: 2
+  healthCost: 2
+  soldierPrefab: {fileID: 3878663226846787713, guid: 956ed75f5c07a0c46b4caae69bab462b,
+    type: 3}

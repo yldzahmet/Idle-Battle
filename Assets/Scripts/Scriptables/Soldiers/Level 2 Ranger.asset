@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cc0136200c9ba4d928242396f23707, type: 3}
   m_Name: Level 2 Ranger
   m_EditorClassIdentifier: 
+  soldierType: 1
+  isRunning: 0
+  isAttacking: 0
   range: 25
-  health: 15
-  attackSpeed: 3
-  attackPower: 0
-  walkSpeed: 0
+  health: 10
+  attackSpeed: 2
+  attackPower: 2
+  walkSpeed: 5
