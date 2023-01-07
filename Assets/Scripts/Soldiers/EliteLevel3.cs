@@ -14,7 +14,7 @@ public class EliteLevel3 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvents
     public SoldierSO soldier;
     private GameObject target;
     private float range;
-    private float health;
+    [SerializeField] private float health;
     private float attackSpeed;
     private float attackPower;
     private float walkSpeed;
@@ -26,7 +26,7 @@ public class EliteLevel3 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvents
     public event Action SoldierDeadEvent;
 
     // Custom Fields
-
+    public BoxCollider AttackArea;
 
     public SoldierSO Soldier { get => soldier; set => soldier = value; }
     public GameObject Target { get => target; set => target = value; }
@@ -48,6 +48,7 @@ public class EliteLevel3 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvents
         _collider = transform.GetChild(0).GetComponent<CapsuleCollider>();
         animatorDino = transform.GetChild(1).GetComponent<Animator>();
         animatorChar = transform.GetChild(1).GetChild(0).GetChild(6).GetChild(2).GetComponent<Animator>();
+
     }
     private void Start()
     {
@@ -64,8 +65,12 @@ public class EliteLevel3 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvents
     public void GoDestination(GameObject destObject)
     {
         Debug.Log("GoDestination to " + destObject.name);
+
+        animatorChar.ResetTrigger("idle");
+        animatorDino.ResetTrigger("idle");
         animatorChar.ResetTrigger("heavy attack");
         animatorDino.ResetTrigger("heavy attack");
+
         animatorChar.SetTrigger("walk");
         animatorDino.SetTrigger("walk");
         this.target = destObject;
@@ -113,7 +118,7 @@ public class EliteLevel3 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvents
         agent.isStopped = true;
         Target = target;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (damage >= health)
         {
@@ -126,18 +131,24 @@ public class EliteLevel3 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvents
             print(name + "'s health : " + health);
         }
     }
-    public void ProjectileReleased()
+    public void AttackBegin(float damage)
     {
-        throw new NotImplementedException();
+        if (target.TryGetComponent(out ISoldierBase Ibase))
+        {
+            if (!Ibase.IsDead)
+                Ibase.TakeDamage(damage * attackPower);
+        }
     }
     public void Die()
     {
         if (IsDead == false)
         {
             Debug.Log(name + " Died");
-            gameObject.layer = 0;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<SoldierController>().currentState = State.Dead;
+            gameObject.layer = 0;
             IsDead = true;
+            agent.isStopped = true;
             animatorChar.SetTrigger("die");
             animatorDino.SetTrigger("die");
             Destroy(gameObject, 2f);

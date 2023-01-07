@@ -14,7 +14,7 @@ public class WarriorLevel2 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEven
     public SoldierSO soldier;
     private GameObject target;
     private float range;
-    private float health;
+    [SerializeField] private float health;
     private float attackSpeed;
     private float attackPower;
     private float walkSpeed;
@@ -102,13 +102,14 @@ public class WarriorLevel2 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEven
     public void Attack(GameObject target)
     {
         Debug.Log(name + " Attacked to " + target.name);
+        animator.ResetTrigger("idle");
         animator.ResetTrigger("walk");
         animator.SetTrigger("heavy attack");
         target.GetComponent<ISoldierEvents>().SoldierDeadEvent += GetComponent<SoldierController>().SearchForNewEnemy;
         agent.isStopped = true;
         Target = target;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (damage >= health)
         {
@@ -121,18 +122,24 @@ public class WarriorLevel2 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEven
             print(name + "'s health : " + health);
         }
     }
-    public void ProjectileReleased()
+    public void AttackBegin(float damage)
     {
-        throw new NotImplementedException();
+        if (target.TryGetComponent(out ISoldierBase Ibase))
+        {
+            if (!Ibase.IsDead)
+                Ibase.TakeDamage(damage * attackPower);
+        }
     }
     public void Die()
     {
         if (IsDead == false)
         {
             Debug.Log(name + " Died");
-            gameObject.layer = 0;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<SoldierController>().currentState = State.Dead;
             IsDead = true;
+            gameObject.layer = 0;
+            agent.isStopped = true;
             animator.SetTrigger("die");
             Destroy(gameObject, 2f);
             if (SoldierDeadEvent != null)

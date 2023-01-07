@@ -16,7 +16,7 @@ MonoBehaviour:
   isRunning: 0
   isAttacking: 0
   range: 25
-  health: 10
+  health: 50
   attackSpeed: 2
-  attackPower: 2
+  attackPower: 3
   walkSpeed: 5

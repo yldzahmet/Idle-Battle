@@ -14,7 +14,7 @@ public class RangerLevel1 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvent
     public SoldierSO soldier;
     private GameObject target;
     private float range;
-    private float health;
+    [SerializeField] private float health;
     private float attackSpeed;
     private float attackPower;
     private float walkSpeed;
@@ -111,7 +111,7 @@ public class RangerLevel1 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvent
         agent.isStopped = true;
         Target = target;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (damage >= health) {
             health = 0;
@@ -123,18 +123,24 @@ public class RangerLevel1 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvent
             print(name +"'s health : "+ health);
         }
     }
-    public void ProjectileReleased()
+    public void AttackBegin(float damage)
     {
-        ThrowRock();
+        if (target.TryGetComponent(out ISoldierBase Ibase))
+        {
+            if (!Ibase.IsDead)
+                ThrowRock();
+        }
     }
     public void Die()
     {
         if (IsDead == false)
         {
             Debug.Log(name + " Died");
-            gameObject.layer = 0;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<SoldierController>().currentState = State.Dead;
             IsDead = true;
+            agent.isStopped = true;
+            gameObject.layer = 0;
             animator.SetTrigger("die");
             Destroy(gameObject, 2f);
             if (SoldierDeadEvent != null)
@@ -144,7 +150,8 @@ public class RangerLevel1 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvent
     }
     public void EnterIdleState()
     {
-        throw new NotImplementedException();
+        GetComponent<SoldierController>().currentState = State.Idle;
+        animator.SetTrigger("idle");
     }
 
     /// <summary>
@@ -153,11 +160,6 @@ public class RangerLevel1 : MonoBehaviour, ISoldierBase, IMoveble, ISoldierEvent
     public void ThrowRock()
     {
         GameObject projectile = Instantiate(Rock, HandPosition.position, Quaternion.identity);
-
-        //LayerMask enemyLayer = GetComponent<SoldierController>().enemyLayer;
-        //int layerNumber = Mathf.RoundToInt(Mathf.Log(enemyLayer.value, 2));
-
-        projectile.layer = gameObject.layer + 2;
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         rb.AddForce((Target.transform.position + new Vector3(0,3   ,0) - HandPosition.position) * 100f);

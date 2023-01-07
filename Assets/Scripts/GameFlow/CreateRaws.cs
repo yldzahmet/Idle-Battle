@@ -10,11 +10,11 @@ public class CreateRaws : MonoBehaviour
     public TextMeshProUGUI metarialsText;
 
     [SerializeField]
-    private int rawMetarials = 0;
+    private bool generating = true;
     [SerializeField]
     private float currentCoolDown = 0;
     [SerializeField]
-    private bool generating = true;
+    private int rawMetarials = 0;
 
     private void OnTriggerStay(Collider other)
     {
@@ -26,7 +26,6 @@ public class CreateRaws : MonoBehaviour
                 playerStats.IncreaseMetarials(rawMetarials);
                 rawMetarials = 0;
             }
-
         }
     }
 

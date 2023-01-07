@@ -16,12 +16,12 @@
                 },
                 {
                     "name": "Swipe",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "df3eda7d-63d9-4590-8f33-24e3aa901e07",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -39,7 +39,7 @@
                 {
                     "name": "",
                     "id": "b2d97f20-2464-4c38-a4c3-b36667c6c908",
-                    "path": "<Touchscreen>/primaryTouch/position",
+                    "path": "<Touchscreen>/primaryTouch/radius",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

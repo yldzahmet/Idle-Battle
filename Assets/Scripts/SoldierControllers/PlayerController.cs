@@ -6,14 +6,14 @@ using ETouch = UnityEngine.InputSystem.EnhancedTouch;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 joystickSize = new Vector2(300, 300);
-    [SerializeField]
-    private FloatingJoystick joystick;
+    private float relativeJoystickSize;
+    [SerializeField] private Vector2 joystickSize;
+    [SerializeField] private FloatingJoystick joystick;
 
     private Rigidbody pRigidBody;
     private Animator pAnimator;
 
-    public float speed = 20f;
+    public float speed = 5;
     public StatsSO playerStats;
 
 
@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
     
     private void Start()
     {
+        relativeJoystickSize = Screen.width / 3;
+        joystickSize = new Vector2(relativeJoystickSize, relativeJoystickSize);
         pRigidBody = GetComponent<Rigidbody>();
         pAnimator = GetComponentInChildren<Animator>();
     }
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
             movementAmount = Vector2.zero;
             joystick.gameObject.SetActive(true);
             joystick.RectTransform.sizeDelta = joystickSize;
+            joystick.Knob.sizeDelta = joystickSize / 3;
             joystick.RectTransform.anchoredPosition = ClampStartPosition(TouchedFinger.screenPosition);
             pAnimator.SetTrigger("Run");
         }
@@ -163,7 +166,7 @@ public class PlayerController : MonoBehaviour
         //InputController.OnTouchReleased -= Touch_Released;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector3 scaledMovement = speed * Time.deltaTime * new Vector3(movementAmount.x, 0, movementAmount.y);
         transform.LookAt(transform.position + scaledMovement, Vector3.up);

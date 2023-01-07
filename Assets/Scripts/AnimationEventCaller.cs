@@ -5,13 +5,14 @@ using UnityEngine;
 public class AnimationEventCaller : MonoBehaviour
 {
     private ISoldierBase soldierBase;
+    public float damage;
     private void Awake()
     {
         soldierBase = GetComponentInParent<ISoldierBase>();
     }
-    public void ThrowRockEventCallback()
+    public void AttackEventCallback(float damage)
     {
         if (soldierBase != null)
-            soldierBase.ProjectileReleased();
+            soldierBase.AttackBegin(damage);
     }
 }

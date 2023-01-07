@@ -16,8 +16,8 @@ public interface ISoldierBase
 
     public GameObject GetClosestEnemy();
     public void Attack(GameObject target);
-    public void TakeDamage(int damage);
-    public void ProjectileReleased();
+    public void TakeDamage(float damage);
+    public void AttackBegin(float damage);
     public void Die();
     public void EnterIdleState();
 }

@@ -735,6 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dcd75f29467bdc48a868b5e7eb164c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
 --- !u!1 &5917853605687980310
 GameObject:
   m_ObjectHideFlags: 0
@@ -3223,6 +3224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   willPerformAttack: 1
   willMoveDestination: 1
+  currentState: 0
   target: {fileID: 0}
   startDestination: {fileID: 0}
   startDestinationTag: Enemy Flag
@@ -3245,6 +3247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldier: {fileID: 11400000, guid: fc8cba501ff91e94b91a5a43160ea354, type: 2}
+  health: 0
   Rock: {fileID: 2755846784385447261, guid: 1c0696eb2c7320a47b97da99e5245b74, type: 3}
   HandPosition: {fileID: 5917853605671161323}
 --- !u!54 &5917853606649647420
@@ -3259,9 +3262,9 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!136 &5917853606649647421
 CapsuleCollider:

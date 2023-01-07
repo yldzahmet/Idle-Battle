@@ -15,7 +15,7 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
     public SoldierSO soldier;
     private GameObject target;
     private float range;
-    private float health;
+    [SerializeField] private float health;
     private float attackSpeed;
     private float attackPower;
     private float walkSpeed;
@@ -49,7 +49,7 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
 
     private void Awake()
     {
-        //agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         _collider = transform.GetChild(0).GetComponent<CapsuleCollider>();
         animatorChar = transform.GetChild(1).GetComponent<Animator>();
         animatorCatapult = transform.GetChild(2).GetComponent<Animator>();
@@ -64,25 +64,6 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
         IsRunning = soldier.isRunning;
         isAttacking = soldier.isAttacking;
         _collider.radius = Range;
-    }
-
-    public void GoDestination(GameObject destObject)
-    {
-        Debug.Log("GoDestination to " + destObject.name);
-        animatorChar.ResetTrigger("heavy attack");
-        animatorCatapult.ResetTrigger("heavy attack");
-        animatorChar.SetTrigger("walk");
-        animatorCatapult.SetTrigger("walk");
-        this.target = destObject;
-        //agent.SetDestination(destObject.transform.position);
-        //agent.isStopped = false;
-    }
-    public bool CheckReachedDestination(Vector3 destPosition)
-    {
-        if (Vector3.Distance(transform.position, destPosition) < 1f)
-            return true;
-        else
-            return false;
     }
 
     public GameObject GetClosestEnemy()
@@ -110,15 +91,19 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
     public void Attack(GameObject target)
     {
         Debug.Log(name + " Attacked to " + target.name);
+
+        animatorChar.ResetTrigger("idle");
+        animatorCatapult.ResetTrigger("idle");
         animatorChar.ResetTrigger("walk");
         animatorCatapult.ResetTrigger("walk");
+
         animatorChar.SetTrigger("heavy attack");
         animatorCatapult.SetTrigger("heavy attack");
         target.GetComponent<ISoldierEvents>().SoldierDeadEvent += GetComponent<SoldierController>().SearchForNewEnemy;
         //agent.isStopped = true;
         Target = target;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (damage >= health)
         {
@@ -131,7 +116,7 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
             print(name + "'s health : " + health);
         }
     }
-    public void ProjectileReleased()
+    public void AttackBegin(float damage)
     {
         ThrowRock();
     }
@@ -141,9 +126,11 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
         if (IsDead == false)
         {
             Debug.Log(name + " Died");
-            gameObject.layer = 0;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<SoldierController>().currentState = State.Dead;
             IsDead = true;
+            gameObject.layer = 0;
+            agent.isStopped = true;
             animatorChar.SetTrigger("die");
             animatorCatapult.SetTrigger("die");
             Destroy(gameObject, 2f);
@@ -154,7 +141,12 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
     }
     public void EnterIdleState()
     {
-        throw new NotImplementedException();
+        GetComponent<SoldierController>().currentState = State.Idle;
+        animatorChar.ResetTrigger("heavy attack");
+        animatorCatapult.ResetTrigger("heavy attack");
+
+        animatorChar.SetTrigger("idle");
+        animatorCatapult.SetTrigger("idle");
     }
 
     /// <summary>
@@ -163,8 +155,6 @@ public class SpecialLevel3 : MonoBehaviour, ISoldierBase, ISoldierEvents
     public void ThrowRock()
     {
         GameObject projectile = Instantiate(Rock, ReleasePosition.position + new Vector3(0, 0.0411f, 0.015f), Quaternion.identity );
-
-        projectile.layer = gameObject.layer + 2;
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
         float intensity = Vector3.Distance(Target.transform.position + new Vector3(0, 3, 0), ReleasePosition.position);

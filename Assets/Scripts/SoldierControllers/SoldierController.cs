@@ -8,7 +8,7 @@ public class SoldierController : MonoBehaviour
 {
     public bool willPerformAttack = true;
     public bool willMoveDestination = true;
-    internal State currentState;
+    [SerializeField] internal State currentState;
     [SerializeField] internal GameObject target;
     [SerializeField] private GameObject startDestination;
     public string startDestinationTag;
@@ -28,9 +28,19 @@ public class SoldierController : MonoBehaviour
         GoDefaultDestination();
     }
 
-    public void GoDefaultDestination() {
+    public void GoDefaultDestination() { // edit for catapult
+
+        if (!willMoveDestination)
+        {
+            if(TryGetComponent(out ISoldierBase Ibase))
+            {
+                Ibase.EnterIdleState();
+            }   
+            return;
+        }
+
         target = startDestination;
-        if (target && willMoveDestination)
+        if (target)
         {
             IMoveble moveble = GetComponent<IMoveble>();
             if (moveble != null)
@@ -58,19 +68,17 @@ public class SoldierController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        string tag = other.tag;
-
-        if (enemyTags.Contains(tag) && currentState != State.Attacking)
-        {
-            Debug.Log(other.gameObject + " Exit from range ");
-            SearchForNewEnemy();
-        }
+        Debug.Log(other.gameObject + " Exit from range of " + this.gameObject.name);
+        SearchForNewEnemy();
     }
 
     public void SearchForNewEnemy()
     {
+        if (!TryGetComponent(out ISoldierBase soldierBase))
+            return;
+
         print("SearchForNewEnemy");
-        GameObject newTarget = GetComponent<ISoldierBase>().GetClosestEnemy();
+        GameObject newTarget = soldierBase.GetClosestEnemy();
 
         if (newTarget)
                 Debug.Log("GetClosestEnemy is " + newTarget.name);
@@ -95,8 +103,7 @@ public class SoldierController : MonoBehaviour
         switch (currentState)
         {
             case State.Running:
-                IMoveble moveble = GetComponent<IMoveble>();
-                if (moveble != null)
+                if (TryGetComponent(out IMoveble moveble))
                 {
                     moveble.CheckReachedDestination(target.transform.position);
                     currentState = State.Idle;

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Rock : MonoBehaviour
 {
-    public int damage;
+    public float damage;
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("AIPlayer"))
+        if (other.CompareTag("AIPlayer") || other.CompareTag("HPlayer"))
         {
             other.GetComponent<ISoldierBase>().TakeDamage(damage);
         }
